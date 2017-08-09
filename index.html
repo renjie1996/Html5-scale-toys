@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .bg1 {
+      width: 300%;
+      height: 300%;
+      background: url('./dog.png') no-repeat;
+      background-size: 30% 30%;
+      background-position: 0px 0px;
+      transition: all .8s ease-out;
+    }
+
+    .bg2 {
+      width: 300%;
+      height: 300%;
+      background: url('./dog1.png') no-repeat;
+      background-size: 40% 40%;
+      background-position: 0px 0px;
+      display: none;
+      transition: all .8s ease-out;
+    }
+    .bg3 {
+      width: 300%;
+      height: 300%;
+      background: url('./dog2.png') no-repeat;
+      background-size: 40% 40%;
+      background-position: 0px 0px;
+      display: none;
+      transition: all .8s ease-out;
+    }
+
+
+    .btn {
+      position: fixed;
+      bottom: 0px;
+      left: 170px;
+      -webkit-border-radius: 999px;
+      -moz-border-radius: 999px;
+      border-radius: 999px;
+      height: 50px;
+      width: 50px;
+      background-color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="bg1"></div>
+    <div class="bg2"></div>
+    <div class="bg3"></div>
+    <div class="btn"></div>
+    <!--<img src="./dog.png" alt="">-->
+  </div>
+  <script>
+    var oBg1 = document.querySelector('.bg1');
+    var oBg2 = document.querySelector('.bg2');
+    var oBg3 = document.querySelector('.bg3');
+    var oBtn = document.querySelector('.btn');
+    var oSetInterval = null;
+    var nImg = 1;
+    var width = 375, height = 667, pos = 0;
+    oBg1.style.backgroundSize = width + "px" + ' ' + height + "px";
+  
+    oBtn.addEventListener('touchstart', function (e) {
+      e.preventDefault();
+      SetSearch(nImg)
+    }, false)
+
+    oBtn.addEventListener('touchend', function (e) {
+      e.preventDefault();
+      clearInterval(oSetInterval)
+    }, false)
+
+    function Search(el, max, next, $pos, $width, $height) {
+      return function () {
+        if (pos < (max * -1)) {
+          width = 375;height = 667;pos = 0;
+          el.style.backgroundSize = width + "px" + ' ' + height + "px";
+          el.style.backgroundPosition = "0px 0px";
+          nImg ++;
+          if(nImg>3) {
+            nImg = 1
+          }
+          el.style.display = 'none';
+          next.style.display = 'block';
+        } else {
+          width += $width;
+          height += $height;
+          pos -= $pos;
+          el.style.backgroundSize = width + "px" + ' ' + height + "px";
+          el.style.backgroundPosition = pos + "px" + ' ' + pos + "px";
+        }
+      }
+    }
+
+    function SetSearch(nImg) {
+      switch(nImg) {
+        case 1: 
+          var oSearch = Search(oBg1, 160, oBg2, 12, 30, 53);
+          break;
+        case 2: 
+          var oSearch = Search(oBg2, 160, oBg3, 12, 30, 53);
+          break;
+        case 3: 
+          var oSearch = Search(oBg3, 160, oBg1, 12, 30, 53);
+          break;
+      }
+      oSearch();
+      oSetInterval = setInterval(oSearch, 300);
+    }
+  </script>
+</body>
+
+</html>
